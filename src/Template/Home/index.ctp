@@ -59,6 +59,7 @@
                 </div>
             </div>
             <div class="row">
+
                 <?php $count = 1; ?>
                 <?php foreach ($assetTypes as $a): ?>
 
@@ -73,7 +74,7 @@
 
                             <?= $this->Html->link($this->Html->image($pic_name, ['class' => 'img-responsive', 'alt' => '']), '/assets/index/' . $a->id, ['escape' => false]) ?>
                         </div>
-                        <?= $this->Html->link('<h5>' . h($a->name) . '</h5>', '/assets/index/' . $a->id, ['escape' => false, 'class' => 'font-mitr400']) ?>
+                        <?= $this->Html->link('<h5>' . h($a->name.' ('.sizeof($a->assets).' รายการ)') . '</h5>', '/assets/index/' . $a->id, ['escape' => false, 'class' => 'font-mitr400']) ?>
 
                     </div>
 

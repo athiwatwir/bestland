@@ -40,7 +40,8 @@ class HomeController extends AppController {
 
 
         $assetTypes = $this->AssetTypes->find('all', [
-                    'contain' => ['Assets'],
+                    'fields'=>['AssetTypes.id','AssetTypes.pic','AssetTypes.name'],
+                    'contain' => ['Assets'=>['fields'=>['Assets.asset_type_id','Assets.id']]],
                     'order' => ['AssetTypes.seq' => 'ASC']
                 ])->toArray();
 
