@@ -117,7 +117,7 @@
                 <h3 class="f-color-black text-center font-mitr400" style="font-size: 32px !important;padding-bottom: 10px;">ค้นหาทรัพย์สิน</h3>
                 <?= $this->Form->create('', ['url' => ['controller' => 'assets', 'action' => 'formsearch'], 'class' => '']) ?>
                 <div class="form-group">
-                    <?= $this->Form->input('code', ['class' => 'form-control rounded-0', 'label' => false, 'placeholder' => 'รหัสทรัพย์สิน']) ?>
+                    <?= $this->Form->input('code', ['class' => 'form-control rounded-0', 'label' => false, 'placeholder' => 'รหัสทรัพย์สิน/ชื่อ/สถานที่']) ?>
                 </div>
                 <div class="form-group">
                     <?= $this->Form->input('asset_type_id', ['class' => 'form-control custom-select rounded-0', 'label' => false, 'options' => $assetTypeList, 'empty' => 'หมวดหมู่สินทรัพย์']) ?>

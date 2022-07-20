@@ -189,7 +189,7 @@ class AssetsController extends AppController {
     public function search() {
 
         //get urlpara
-        $code = $this->request->query('code');
+        $code = trim($this->request->query('code'));
         $asset_type_id = $this->request->query('asset_type_id');
         $province_id = $this->request->query('province_id');
         $amphur_id = $this->request->query('amphur_id');
@@ -202,7 +202,8 @@ class AssetsController extends AppController {
             'contain' => ['AssetTypes', 'Users', 'Addresses' => ['Provinces'], 'AssetImages' => ['sort' => ['AssetImages.isdefault' => 'ASC'], 'Images']]
         ];
         if ((!is_null($code)) && $code != '') {
-            array_push($where, ['Assets.code LIKE' => '%' . $code . '%']);
+            array_push($where, ['OR'=>['Assets.code LIKE' => '%' . $code . '%','Assets.name LIKE' => '%' . $code . '%']]);
+            //array_push($where, ['Assets.name LIKE' => '%' . $code . '%']);
         }
         if ((!is_null($asset_type_id)) && $asset_type_id != '') {
             array_push($where, ['Assets.asset_type_id' => $asset_type_id]);
