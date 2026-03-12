@@ -45,17 +45,17 @@
                 <div class="row">
                     <div class="col-md-12">
                         <label for="example-nf-email">คำอธิบายรายละเอียดทรัพย์สินแบบย่อ <?= REQ_FIELD ?></label>
-                        <?= $this->Form->input('name', ['class' => 'form-control', 'label' => false, 'id' => 'name']); ?>
+                        <?= $this->Form->input('name', ['class' => 'form-control', 'label' => false, 'id' => 'name', 'required' => true]); ?>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4">
                         <label for="">รหัสสินทรัพย์ <?= REQ_FIELD ?></label>
-                        <?= $this->Form->input('code', ['class' => 'form-control', 'label' => false, 'id' => 'code']); ?>
+                        <?= $this->Form->input('code', ['class' => 'form-control', 'label' => false, 'id' => 'code', 'required' => true]); ?>
                     </div>
                     <div class="col-md-4">
                         <label for="">ตัวแทนขาย <?= REQ_FIELD ?></label>
-                        <?= $this->Form->input('user_id', ['options' => $users, 'empty' => false, 'class' => 'form-control', 'label' => false, 'id' => 'user_id']); ?>
+                        <?= $this->Form->input('user_id', ['options' => $users, 'empty' => false, 'class' => 'form-control', 'label' => false, 'id' => 'user_id', 'required' => true]); ?>
                     </div>
                     <div class="col-md-4">
                         <?php
@@ -74,7 +74,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label for="">ประเภทสินทรัพย์ <?= REQ_FIELD ?></label>
-                        <?= $this->Form->input('asset_type_id', ['options' => $assetTypes, 'empty' => false, 'class' => 'form-control', 'label' => false]); ?>
+                        <?= $this->Form->input('asset_type_id', ['options' => $assetTypes, 'empty' => false, 'class' => 'form-control', 'label' => false, 'required' => true]); ?>
                     </div>
                     <div class="col-md-6">
                         <h5 class="f-color-red">ความต้องการการประกาศ</h5>
@@ -104,7 +104,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <label for="">ราคา/บาท <?= REQ_FIELD ?></label>
-                        <?= $this->Form->input('price_amounnt', ['class' => 'form-control', 'label' => false, 'type' => 'text', 'id' => 'price_amounnt']); ?>
+                        <?= $this->Form->input('price_amounnt', ['class' => 'form-control', 'label' => false, 'type' => 'text', 'id' => 'price_amounnt', 'required' => true]); ?>
                     </div>
                     <div class="col-md-4">
                         <label for="">ราคาต่อตารางวา/บาท</label>
@@ -140,7 +140,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label for="">โซน <?= REQ_FIELD ?></label>
-                        <?= $this->Form->input('zone_id', ['options' => $zones, 'empty' => false, 'class' => 'form-control', 'label' => false]); ?>
+                        <?= $this->Form->input('zone_id', ['options' => $zones, 'empty' => false, 'class' => 'form-control', 'label' => false, 'required' => true]); ?>
                     </div>
                 </div>
                 <div class="row">
@@ -341,11 +341,16 @@
 
 
 <script>
-
     $(function () {
         $('#expire_date').datepicker({autoclose: true, format: 'dd-mm-yyyy'});
         $.validator.messages.required = "กรุณากรอกข้อมูล";
-        $("#frm").validate({
+
+        var $form = $("#frm");
+        var $submit = $form.find('button[type=submit]');
+        // เริ่มต้นให้ปุ่มบันทึกกดไม่ได้ จนกว่าจะกรอกครบและผ่าน validation
+        $submit.prop('disabled', true);
+
+        $form.validate({
             rules: {
                 name: {
                     required: true
@@ -354,6 +359,9 @@
                     required: true
                 },
                 user_id: {
+                    required: true
+                },
+                asset_type_id: {
                     required: true
                 },
                 price_amounnt: {
@@ -374,6 +382,9 @@
                 },
                 direction: {
                     required: false
+                },
+                zone_id: {
+                    required: true
                 }
             },
             messages: {
@@ -385,6 +396,19 @@
             submitHandler: function (form) {
                 form.submit();
             }
+        });
+
+        function toggleSubmit() {
+            if ($form.valid()) {
+                $submit.prop('disabled', false);
+            } else {
+                $submit.prop('disabled', true);
+            }
+        }
+
+        // เช็คทุกครั้งที่มีการเปลี่ยนค่าในฟอร์ม
+        $form.on('keyup change', 'input, select, textarea', function () {
+            toggleSubmit();
         });
     });
 </script>

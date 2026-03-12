@@ -63,7 +63,7 @@
                 <div class="u-heading-v2-3--bottom g-brd-white-opacity-0_8 g-mb-20">
                     <h2 class="u-heading-v2__title h6 text-uppercase mb-0">Social Media</h2>
                 </div>
-                <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FBaanBestland&tabs=timeline&width=340&height=200&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false&appId" width="340" height="200" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                <iframe src="https://www.facebook.com/plugins/page.php?href=https://www.facebook.com/baanbestland101&tabs=timeline&width=340&height=200&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false&appId" width="340" height="200" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
 
             </div>
             <!-- End Footer Content -->

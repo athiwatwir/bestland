@@ -11,7 +11,7 @@ $(document).ready(function() {
         <a href="javascript:void(0)" name="closesocialbox" class="closesocialbox-bt" id="closesocialbox">CLOSE</a>
     </div>
     <div class="box">
-        <a class="" href="https://www.facebook.com/BaanBestland/" target="_blank">
+        <a class="" href="https://www.facebook.com/profile.php?id=61573770431834" target="_blank">
             <?= $this->Html->image('social_icon/1482860802_facebook.png', []); ?>
         </a>
     </div>
@@ -26,8 +26,8 @@ $(document).ready(function() {
         </a>
     </div>
     <div class="box">
-        <iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FBaanBestland&width=100&layout=button&action=like&size=large&show_faces=false&share=false&height=30&appId" width="100" height="30" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
-        <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Fwww.facebook.com%2FBaanBestland&layout=button&size=large&mobile_iframe=true&width=100&height=30&appId" width="100" height="30" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+        <iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fprofile.php?id=61573770431834&width=100&layout=button&action=like&size=large&show_faces=false&share=false&height=30&appId" width="100" height="30" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+        <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Fwww.facebook.com%2Fprofile.php?id=61573770431834&layout=button&size=large&mobile_iframe=true&width=100&height=30&appId" width="100" height="30" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
     </div>
 </div>
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">

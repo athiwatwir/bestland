@@ -1,13 +1,16 @@
-
 <div class="row">
-    <div class="col-md-12 text-center"> 
+    <div class="col-md-12 text-center">
         <h2 class="pading-10-0 font-mitr600">ฝากหาบ้านที่ดิน</h2>
         <p>
-            ฝากหาบ้าน-ที่ดิน  หรืออสังหาริมทรัพย์ อื่นๆ ในเขตกรุงเทพฯ และปริมณฑล ในกรณีที่ท่านดูรายการทรัพย์สินของเราหมดแล้ว ยังไม่เป็นที่ถูกใจ ให้ท่านกรอกข้อมูลรายละเอียดลงแบบฟอร์ม  ทางด้านล่างนี้ได้เลยครับ  ถ้ามีทรัพย์ใหม่ๆ ที่ตรงตามความต้องการของท่านทางเราจะส่งข้อมูลไปทางอีเมลล์หรือไลน์ ตามที่ท่านได้ให้ข้อมูลไว้ครับ
+            ฝากหาบ้าน-ที่ดิน หรืออสังหาริมทรัพย์ อื่นๆ ในเขตกรุงเทพฯ และปริมณฑล ในกรณีที่ท่านดูรายการทรัพย์สินของเราหมดแล้ว ยังไม่เป็นที่ถูกใจ ให้ท่านกรอกข้อมูลรายละเอียดลงแบบฟอร์ม ทางด้านล่างนี้ได้เลยครับ ถ้ามีทรัพย์ใหม่ๆ ที่ตรงตามความต้องการของท่านทางเราจะส่งข้อมูลไปทางอีเมลล์หรือไลน์ ตามที่ท่านได้ให้ข้อมูลไว้ครับ
         </p>
     </div>
 </div>
 <?= $this->Form->create($customer, ['class' => 'form-horizontal m-t-sm', 'novalidate' => true, 'enctype' => 'multipart/form-data']) ?>
+<!-- Honeypot field ป้องกันบอทกรอกฟอร์ม -->
+<div style="display:none">
+    <?= $this->Form->input('website', ['label' => false, 'value' => '']); ?>
+</div>
 <div class="row">
     <div class="col-md-12">
         <h4 class="font-mitr400">รายละเอียดผู้ติดต่อ</h4>
@@ -34,19 +37,31 @@
     </div>
     <?= $this->Form->input('customer_asset.type', ['type' => 'hidden', 'label' => false, 'value' => 'P']); ?>
     <div class="col-md-6">
-        <label class="custom-label" for="">ประเภทสินทรัพย์</label>
-        <?= $this->Form->input('customer_asset.asset_type_id', ['options' => $assetTypes, 'empty' => true, 'class' => 'form-control', 'label' => false]); ?>
+        <label class="custom-label" for="">ประเภทสินทรัพย์ <?= REQ_FIELD ?></label>
+        <?= $this->Form->input('customer_asset.asset_type_id', [
+            'options' => $assetTypes,
+            'empty' => false,
+            'class' => 'form-control',
+            'label' => false,
+            'required' => true,
+        ]); ?>
     </div>
     <div class="col-md-6">
         <label class="custom-label" for="">ประเภทสินทรัพย์อื่น ๆ </label>
         <?= $this->Form->input('customer_asset.asset_type_des', ['class' => 'form-control', 'label' => false]); ?>
     </div>
     <div class="col-md-6">
-        <label class="custom-label" for="">กรุณาเลือกงบประมาณ</label>
-        <?= $this->Form->input('customer_asset.budgets', ['options' => $budgets, 'empty' => true, 'class' => 'form-control', 'label' => false]); ?>
+        <label class="custom-label" for="">กรุณาเลือกงบประมาณ <?= REQ_FIELD ?></label>
+        <?= $this->Form->input('customer_asset.budgets', [
+            'options' => $budgets,
+            'empty' => false,
+            'class' => 'form-control',
+            'label' => false,
+            'required' => true,
+        ]); ?>
     </div>
 
-    <div class="col-md-12"> 
+    <div class="col-md-12">
         <div class="form-group">
             <label class="custom-label" for="" class="col-xs-12">กรุณาเลือกโซนที่ต้องการซื้อ</label>
             <?php foreach ($zones as $a): ?>

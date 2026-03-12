@@ -21,16 +21,16 @@ $articles = $this->request->session()->read('Articles');
 <div class="col-md-12 no-pading-left no-pading-right hidden-xs padding-bottom-64 font-mitr400">
     <h3 class="font-mitr400">ลิงค์เว็บไซด์ที่เกี่ยวข้อง</h3>
     <ul class="list">
-        <li><?= $this->Html->link('ตรวจสอบราคาประเมิน', 'http://property.treasury.go.th/pvmwebsite/index.asp ', ['escape' => false, 'target' => '_blank']) ?></li>
-        <li><?= $this->Html->link('ค้นหาตำแหน่งแปลงที่ดิน', 'http://dolwms.dol.go.th/tvwebp/', ['escape' => false, 'target' => '_blank']) ?></li>
-        <li><?= $this->Html->link('หนังสือมอบอำนาจของกรมที่ดิน', 'http://www.dol.go.th/dol/index.php?option=com_content&task=view&id=1158', ['escape' => false, 'target' => '_blank']) ?></li>
+        <li><?= $this->Html->link('ตรวจสอบราคาประเมิน', 'https://assessprice.treasury.go.th/', ['escape' => false, 'target' => '_blank']) ?></li>
+        <li><?= $this->Html->link('ค้นหาตำแหน่งแปลงที่ดิน', 'https://landsmaps.dol.go.th/', ['escape' => false, 'target' => '_blank']) ?></li>
+        <li><?= $this->Html->link('หนังสือมอบอำนาจของกรมที่ดิน', 'https://www.dol.go.th/Pages/all_form_download.aspx', ['escape' => false, 'target' => '_blank']) ?></li>
     </ul>
 </div>
 <div class="col-md-12 no-pading-left no-pading-right hidden-xs padding-bottom-64 font-mitr400 side-menu-link">
     <!--PDF_SITE_URL . 'สัญญาแต่งตั้งตัวแทนขาย.pdf' -->
 
     <?= $this->Html->link('สัญญาแต่งตั้งตัวแทนขาย', 'javascript:void(0);', ['escape' => false, 'target' => '', 'class' => 'btn btn-md btn-block main-bt g-mb-10']) ?>
-    <?= $this->Html->link('สัญญาจะซื้อจะขาย', PDF_SITE_URL . 'สัญญาจะซื้อจะขายหรือสัญญาวางเงินมัดจำ.pdf', ['escape' => false, 'target' => '_blank', 'class' => 'btn btn-md btn-block main-bt g-mb-10']) ?>
+    <?= $this->Html->link('สัญญาจะซื้อจะขาย', 'https://drive.google.com/file/d/1tFPzqqDHxWL5yaTdSwXIMbIvFvRhRivZ/view?usp=sharing', ['escape' => false, 'target' => '_blank', 'class' => 'btn btn-md btn-block main-bt g-mb-10']) ?>
     <?= $this->Html->link('ที่ตั้งของบริษัท', CONTACT_URL, ['escape' => false, 'class' => 'btn btn-md btn-block main-bt g-mb-10']) ?>
 </div>
 

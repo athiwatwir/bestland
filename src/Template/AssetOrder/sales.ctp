@@ -7,6 +7,10 @@
     </div>
 </div>
 <?= $this->Form->create($customer, ['class' => '', 'novalidate' => true, 'enctype' => 'multipart/form-data']) ?>
+<!-- Honeypot field ป้องกันบอทกรอกฟอร์ม -->
+<div style="display:none">
+    <?= $this->Form->input('website', ['label' => false, 'value' => '']); ?>
+</div>
 <div class="row">
     <div class="col-md-12">
         <h4 class="font-mitr400">รายละเอียดผู้ติดต่อ</h4>
@@ -34,8 +38,14 @@
     </div>
     <?= $this->Form->input('customer_asset.type', ['type' => 'hidden', 'label' => false, 'value' => 'S']); ?>
     <div class="col-md-6">
-        <label class="custom-label" for="">ประเภทสินทรัพย์</label>
-        <?= $this->Form->input('customer_asset.asset_type_id', ['options' => $assetTypes, 'empty' => true, 'class' => 'form-control', 'label' => false]); ?>
+        <label class="custom-label" for="">ประเภทสินทรัพย์ <?= REQ_FIELD ?></label>
+        <?= $this->Form->input('customer_asset.asset_type_id', [
+            'options' => $assetTypes,
+            'empty' => false,
+            'class' => 'form-control',
+            'label' => false,
+            'required' => true,
+        ]); ?>
     </div>
     <div class="col-md-6">
         <label class="custom-label" for="">ประเภทสินทรัพย์อื่น ๆ </label>

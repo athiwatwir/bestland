@@ -1,4 +1,5 @@
 <?php
+
 return [
     /**
      * Debug Level:
@@ -10,7 +11,6 @@ return [
      * true: Errors and warnings shown.
      */
     'debug' => filter_var(env('DEBUG', true), FILTER_VALIDATE_BOOLEAN),
-
     /**
      * Configure basic information about the application.
      *
@@ -55,7 +55,6 @@ return [
             'locales' => [APP . 'Locale' . DS],
         ],
     ],
-
     /**
      * Security and encryption configuration
      *
@@ -64,9 +63,8 @@ return [
      *   You should treat it as extremely sensitive data.
      */
     'Security' => [
-        'salt' => env('SECURITY_SALT', '9a18f0db660c4d5f07b21923dd9106940f050a14bc3bb17f66e38abf35122de9'),
+        'salt' => env('SECURITY_SALT', '9a18f0db660ce306940f050a14bc3bb17f66e384d5f07b21923940f0f66e3dd91940f050a14bc3bb17f50a14bc3bb1766abf35122de9'),
     ],
-
     /**
      * Apply timestamps with the last modified time to static assets (js, css, images).
      * Will append a querystring parameter containing the time the file was modified.
@@ -78,7 +76,6 @@ return [
     'Asset' => [
         // 'timestamp' => true,
     ],
-
     /**
      * Configure the cache adapters.
      */
@@ -88,7 +85,6 @@ return [
             'path' => CACHE,
             'url' => env('CACHE_DEFAULT_URL', null),
         ],
-
         /**
          * Configure the cache used for general framework caching.
          * Translation cache files are stored with this configuration.
@@ -103,7 +99,6 @@ return [
             'duration' => '+1 years',
             'url' => env('CACHE_CAKECORE_URL', null),
         ],
-
         /**
          * Configure the cache for model and datasource caches. This cache
          * configuration is used to store schema descriptions, and table listings
@@ -119,7 +114,6 @@ return [
             'url' => env('CACHE_CAKEMODEL_URL', null),
         ],
     ],
-
     /**
      * Configure the Error and Exception handlers used by your application.
      *
@@ -156,7 +150,6 @@ return [
         'log' => true,
         'trace' => true,
     ],
-
     /**
      * Email configuration.
      *
@@ -190,7 +183,6 @@ return [
             'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
         ],
     ],
-
     /**
      * Email delivery profiles
      *
@@ -208,7 +200,6 @@ return [
             //'headerCharset' => 'utf-8',
         ],
     ],
-
     /**
      * Connection information used by the ORM to connect
      * to your application's datastores.
@@ -229,15 +220,14 @@ return [
              * the following line and set the port accordingly
              */
             //'port' => 'non_standard_port_number',
-             'username' => 'root',
-            'password' => '',
+            'username' => 'root',
+            'password' => "",
             'database' => 'bestland',
             'encoding' => 'utf8',
             'timezone' => 'UTC',
             'flags' => [],
             'cacheMetadata' => true,
             'log' => false,
-
             /**
              * Set identifier quoting to true if you are using reserved words or
              * special characters in your table or column names. Enabling this
@@ -247,7 +237,6 @@ return [
              * manipulated before being executed.
              */
             'quoteIdentifiers' => false,
-
             /**
              * During development, if using MySQL < 5.6, uncommenting the
              * following line could boost the speed at which schema metadata is
@@ -256,10 +245,8 @@ return [
              * which is the recommended value in production environments
              */
             //'init' => ['SET GLOBAL innodb_stats_on_metadata = 0'],
-
             'url' => env('DATABASE_URL', null),
         ],
-
         /**
          * The test connection is used during the test suite.
          */
@@ -281,7 +268,6 @@ return [
             'url' => env('DATABASE_TEST_URL', null),
         ],
     ],
-
     /**
      * Configures logging options
      */
@@ -311,7 +297,6 @@ return [
             'scopes' => ['queriesLog'],
         ],
     ],
-
     /**
      * Session configuration.
      *
@@ -353,6 +338,10 @@ return [
      */
     'Session' => [
         'defaults' => 'php',
-        'timeout' => 2000 // 3 days
+        'timeout' => 2000, // 3 days
+        'ini' => [
+            // บังคับให้ PHP ใช้โฟลเดอร์ sessions ในโปรเจกต์นี้ (เขียนได้แน่นอน)
+            'session.save_path' => TMP . 'sessions',
+        ],
     ],
 ];

@@ -10,14 +10,16 @@ use Cake\ORM\TableRegistry;
  *
  * @property \App\Model\Table\AssetImagesTable $AssetImages
  */
-class AssetImagesController extends AppController {
+class AssetImagesController extends AppController
+{
 
     /**
      * Index method
      *
      * @return \Cake\Network\Response|null
      */
-    public function index() {
+    public function index()
+    {
         $this->paginate = [
             'contain' => ['Assets', 'Images']
         ];
@@ -34,7 +36,8 @@ class AssetImagesController extends AppController {
      * @return \Cake\Network\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null) {
+    public function view($id = null)
+    {
         $assetImage = $this->AssetImages->get($id, [
             'contain' => ['Assets', 'Images']
         ]);
@@ -48,7 +51,8 @@ class AssetImagesController extends AppController {
      *
      * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
      */
-    public function add() {
+    public function add()
+    {
         $assetImage = $this->AssetImages->newEntity();
         if ($this->request->is('post')) {
             $assetImage = $this->AssetImages->patchEntity($assetImage, $this->request->data);
@@ -73,7 +77,8 @@ class AssetImagesController extends AppController {
      * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null) {
+    public function edit($id = null)
+    {
         $assetImage = $this->AssetImages->get($id, [
             'contain' => []
         ]);
@@ -93,7 +98,8 @@ class AssetImagesController extends AppController {
         $this->set('_serialize', ['assetImage']);
     }
 
-    public function setdefault($id = null) {
+    public function setdefault($id = null)
+    {
         if (is_null($id)) {
             return;
         }
@@ -106,7 +112,7 @@ class AssetImagesController extends AppController {
         //Set all to N
         $query = $this->AssetImages->find();
         $query->where(['isdefault' => 'Y'])
-                ->where(['asset_id' => $assetId]);
+            ->where(['asset_id' => $assetId]);
         $assetImages = $query->toArray();
 
         foreach ($assetImages as $a) {
@@ -127,7 +133,8 @@ class AssetImagesController extends AppController {
      * @return \Cake\Network\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null) {
+    public function delete($id = null)
+    {
         //$this->request->allowMethod(['post', 'delete']);
         $assetImage = $this->AssetImages->get($id, [
             'contain' => ['Images']
@@ -146,21 +153,25 @@ class AssetImagesController extends AppController {
         return $this->redirect(['controller' => 'admin-asset', 'action' => 'edit', $assetId]);
     }
 
-    public function upload($assetId = null) {
+    public function upload($assetId = null)
+    {
         if ($this->request->is(['patch', 'post', 'put'])) {
             $files = $this->request->data['upload_file'];
 
             $this->loadComponent('UploadImage');
             $assetModel = TableRegistry::get('Assets');
             $asset = $assetModel->get($assetId);
-            
+
+            $userModel = TableRegistry::get('Users');
+            $user = $userModel->get($asset->user_id);
+
             $query = $this->AssetImages->find('all', [
                 'conditions' => ['AssetImages.asset_id' => $assetId]
             ]);
             $countImage = $query->count();
             foreach ($files as $f) {
                 if ($f['name'] != '') {
-                    $image_id = $this->UploadImage->upload($f,$asset->code,null,true,true);
+                    $image_id = $this->UploadImage->upload($f, $asset->code, '', $user->phone);
                     if ($image_id != null) {
                         $countImage++;
                         $assetImage = $this->AssetImages->newEntity();
@@ -179,7 +190,8 @@ class AssetImagesController extends AppController {
         return $this->redirect(['controller' => 'admin-asset', 'action' => 'edit', $assetId]);
     }
 
-    public function updateseq($id = NULL, $type = NULL) {
+    public function updateseq($id = NULL, $type = NULL)
+    {
         $assetImage = $this->AssetImages->get($id, [
             'contain' => ['Images']
         ]);
@@ -224,5 +236,4 @@ class AssetImagesController extends AppController {
 
         return $this->redirect(['controller' => 'admin-asset', 'action' => 'edit', $assetId]);
     }
-
 }

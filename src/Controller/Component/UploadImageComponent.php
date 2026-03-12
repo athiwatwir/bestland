@@ -15,12 +15,15 @@ use Cake\ORM\TableRegistry;
  *
  * @author sakorn.s
  */
-class UploadImageComponent extends Component {
+class UploadImageComponent extends Component
+{
 
-    public $arr_ext = array('jpg', 'jpeg', 'png');
+    public $arr_ext = array('jpg', 'jpeg', 'gif', 'png');
     public $UPLOAD_PATH = WWW_ROOT . 'img/upload/';
 
-    public function upload($file = null, $prefix = '', $subfix = '', $hasImageTable = false,$isPutCopyright=false) {
+
+    public function upload($file = null, $prefix = '', $subfix = '', $copyText = '', $ispushCopyright = true)
+    {
 
         if (is_null($file)) {
             return null;
@@ -37,135 +40,150 @@ class UploadImageComponent extends Component {
 
         //only process if the extension is valid
         if (in_array($ext, $this->arr_ext)) {
-            //do the actual uploading of the file. First arg is the tmp name, second arg is 
+            //do the actual uploading of the file. First arg is the tmp name, second arg is
             //where we are putting it
             $imageFileName = $setNewFileName . '.' . $ext;
-            $path = $this->UPLOAD_PATH.$imageFileName;
+            $path = WWW_ROOT . 'img/upload/' . $imageFileName;
 
             move_uploaded_file($uploadfile, $path);
-            if($isPutCopyright){
-                $this->putcopyright($path, $imageFileName, $ext);
+            if ($ispushCopyright) {
+                $this->putcopyright($path, $imageFileName, $ext, $copyText);
             }
-            
-            if ($hasImageTable) {
-                //prepare the filename for database entry 
-                $Images = TableRegistry::get('Images');
-                $image = $Images->newEntity();
-                $image->name = $imageFileName;
-                $image->type = $ext;
-                $image->path = $path;
 
-                $result = $Images->save($image);
-                if ($result) {
-                    return $result->id;
-                } else {
-                    return null;
-                }
-            }else{
-                return $path;
+            //prepare the filename for database entry
+            $Images = TableRegistry::get('Images');
+            $image = $Images->newEntity();
+            $image->name = $imageFileName;
+            $image->type = $ext;
+            $image->path = $path;
+
+            $result = $Images->save($image);
+            if ($result) {
+                return $result->id;
+            } else {
+                return null;
             }
         }
 
         return null;
     }
 
-    private function putcopyright($path = '', $imageFileName = '', $ext = '') {
-        //validation
+    private function putcopyright($path = '', $imageFileName = '', $ext = '', $watermarkText = '')
+    {
         if ($path == '' || $imageFileName == '' || $ext == '') {
             return;
         }
-        //get copy right from imagae logo
-        $path_copyright = WWW_ROOT . 'img/stamp_logo.png';
 
-        //chicking image type
-        $myImage = '';
-        switch ($ext) {
-            case 'gif' : $myImage = imagecreatefromgif($path);
+        $path_copyright = WWW_ROOT . 'copyright/stamp_logo.png';
+
+        switch (strtolower($ext)) {
+            case 'gif':
+                $myImage = imagecreatefromgif($path);
                 break;
-            case 'jpg' : $myImage = imagecreatefromjpeg($path);
+            case 'jpg':
+            case 'jpeg':
+                $myImage = imagecreatefromjpeg($path);
                 break;
-            case 'jpeg' : $myImage = imagecreatefromjpeg($path);
+            case 'png':
+                $myImage = imagecreatefrompng($path);
                 break;
-            case 'png' : $myImage = imagecreatefrompng($path);
-                break;
-            default : die("Unknown filetype");
+            default:
+                die("Unknown filetype");
         }
+
         $imgWidth = imagesx($myImage);
         $imgHeight = imagesy($myImage);
 
-        //imagealphablending($myImage, true);
-        // Create a reference to the watermark png 
         $copyrightmark = imagecreatefrompng($path_copyright);
         $copyrightWidth = imagesx($copyrightmark);
         $copyrightHeight = imagesy($copyrightmark);
 
-        // Copy the watermark into the background 
-        imagecopy($myImage, $copyrightmark, 0, ($imgHeight - $copyrightHeight), 0, 0, $copyrightWidth, $copyrightHeight);
-        $path = $this->UPLOAD_PATH . $imageFileName;
-        imagejpeg($myImage, $path);
+        $_resPercent = ($imgWidth > $imgHeight) ? 0.6 : 0.3;
+        $_copyrightWidth = $imgWidth - ($imgWidth * $_resPercent);
+        $_resizePercent = ($_copyrightWidth / $copyrightWidth) * 80;
 
-        // Free up resources 
+        $new_copyrightWidth = intval($copyrightWidth * ($_resizePercent / 100));
+        $new_copyrightHeight = intval($copyrightHeight * ($_resizePercent / 100));
+
+        $resizedLogo = imagecreatetruecolor($new_copyrightWidth, $new_copyrightHeight);
+        imagealphablending($resizedLogo, false);
+        imagesavealpha($resizedLogo, true);
+        imagecopyresampled(
+            $resizedLogo,
+            $copyrightmark,
+            0,
+            0,
+            0,
+            0,
+            $new_copyrightWidth,
+            $new_copyrightHeight,
+            $copyrightWidth,
+            $copyrightHeight
+        );
+
+        $font = WWW_ROOT . 'copyright/Sarabun-Bold.ttf';
+        $fontSize = intval($imgWidth * 0.021);
+        $bbox = imagettfbbox($fontSize, 0, $font, $watermarkText);
+        $textWidth = abs($bbox[2] - $bbox[0]);
+        $textHeight = abs($bbox[5] - $bbox[1]);
+
+        $padding = 15;
+        $totalWidth = $textWidth + $new_copyrightWidth + ($padding * 4);
+        $centerY = intval($imgHeight / 2);
+        $totalHeight = max($textHeight, $new_copyrightHeight) + ($padding * 2);
+
+        //$dstX = $imgWidth - $totalWidth - $padding;
+        $dstX = $padding;
+        $dstY = intval(($imgHeight - $totalHeight) / 2);
+
+        // ✅ 1. วาดพื้นหลังโปร่งแสงลงบน myImage โดยตรง
+        $bgColor = imagecolorallocatealpha($myImage, 0, 0, 0, 105); // 40% จาง (127 = โปร่งใสเต็ม)
+        imagefilledrectangle($myImage, $dstX - $padding, $dstY + $padding, $dstX + $totalWidth, $dstY + $totalHeight - $padding, $bgColor);
+
+        // ✅ 2. วางข้อความแบบโปร่งใส
+        $textColor = imagecolorallocatealpha($myImage, 255, 255, 255, 70); // ขาวโปร่งใส
+        //$textX = $dstX + $padding;
+        $textX = $dstX + $padding + $padding + $new_copyrightWidth;
+
+        $textY = $dstY + intval(($totalHeight + $textHeight) / 2) - 2;
+        imagettftext($myImage, $fontSize, 0, $textX, $textY, $textColor, $font, $watermarkText);
+
+        // ✅ 3. วางโลโก้แบบคมชัด (ไม่จาง)
+        //$logoX = $textX + $textWidth + $padding + $padding;
+        $logoX = $dstX;
+
+        $logoY = $dstY + intval(($totalHeight - $new_copyrightHeight) / 2);
+        imagecopy(
+            $myImage,
+            $resizedLogo,
+            $logoX,
+            $logoY,
+            0,
+            0,
+            $new_copyrightWidth,
+            $new_copyrightHeight
+        );
+
+        $outputPath = $this->UPLOAD_PATH . $imageFileName;
+        imagejpeg($myImage, $outputPath, 90);
+
         imagedestroy($myImage);
         imagedestroy($copyrightmark);
-
-
-
-        //logo is transparent: in this case stackoverflow logo
-        //$logo = imagecreatefrompng($path_copyright);
-        //Adjust paramerters according to your image
-        //imagecopymerge($myImage, $logo, 60, 60, 0, 0, 300, 200, 100);
-        //$path = WWW_ROOT . 'img/upload/' . $imageFileName;
-        //imagejpeg($myImage, $path);
-
-        /*
-          if ($path == '' || $imageFileName == '' || $ext == '') {
-          return;
-          }
-
-          $myImage = '';
-          switch ($ext) {
-          case 'gif' : $myImage = imagecreatefromgif($path);
-          break;
-          case 'jpg' : $myImage = imagecreatefromjpeg($path);
-          break;
-          case 'jpeg' : $myImage = imagecreatefromjpeg($path);
-          break;
-          case 'png' : $myImage = imagecreatefrompng($path);
-          break;
-          default : die("Unknown filetype");
-          }
-
-          $myCopyright = imagecreatefromjpeg($path_copyright);
-
-
-          $destWidth = imagesx($myImage);
-          $destHeight = imagesy($myImage);
-          $srcWidth = imagesx($myCopyright);
-          $srcHeight = imagesy($myCopyright);
-
-          $destX = ($destWidth - $srcWidth) / 2;
-          $destY = ($destHeight - $srcHeight) / 1;
-          $white = imagecolorexact($myCopyright, 255, 255, 255);
-          imagecolortransparent($myCopyright, $white);
-
-          imagecopymerge($myImage, $myCopyright, $destX, $destY, 0, 0, $srcWidth, $srcHeight, 50);
-
-          $path = WWW_ROOT . 'img/upload/' . $imageFileName;
-          imagejpeg($myImage, $path);
-          imagedestroy($myImage);
-          imagedestroy($myCopyright);
-
-         */
+        imagedestroy($resizedLogo);
     }
 
-    public function delete($imageId = null) {
+
+
+
+
+
+
+    public function delete($imageId = null)
+    {
         $Images = TableRegistry::get('Images');
         $image = $Images->get($imageId);
         $imagesLocation = $image->path;
         $Images->delete($image);
         unlink($imagesLocation);
     }
-
 }
-
-?>

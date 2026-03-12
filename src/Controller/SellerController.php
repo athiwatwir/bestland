@@ -11,11 +11,13 @@ use Cake\ORM\TableRegistry;
  *
  * @property \App\Model\Table\SellerTable $Seller
  */
-class SellerController extends AppController {
+class SellerController extends AppController
+{
 
     public $Users = null;
 
-    public function beforeFilter(Event $event) {
+    public function beforeFilter(Event $event)
+    {
         parent::beforeFilter($event);
         $this->viewBuilder()->layout('admin');
         $this->Users = TableRegistry::get('Users');
@@ -26,21 +28,21 @@ class SellerController extends AppController {
      *
      * @return \Cake\Network\Response|null
      */
-    public function index() {
-        if(null != $this->request->query('reset')){
-            if($this->request->query('reset') == true){
-                $this->request->session()->write('defaultSearch','');
+    public function index()
+    {
+        if (null != $this->request->query('reset')) {
+            if ($this->request->query('reset') == true) {
+                $this->request->session()->write('defaultSearch', '');
             }
         }
-        
+
         $title = "รายชื่อตัวแทนขาย";
         $query = $this->Users->find('all')
-                ->where(['isseller' => 'Y'])
-                ->order(['seq' => 'ASC', 'firstname' => 'ASC']);
+            ->where(['isseller' => 'Y'])
+            ->order(['seq' => 'ASC', 'firstname' => 'ASC']);
         $users = $query->toArray();
         $this->set(compact('users', 'title'));
         $this->set('_serialize', ['users']);
-
     }
 
     /**
@@ -50,7 +52,8 @@ class SellerController extends AppController {
      * @return \Cake\Network\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null) {
+    public function view($id = null)
+    {
         $seller = $this->Seller->get($id, [
             'contain' => []
         ]);
@@ -64,7 +67,8 @@ class SellerController extends AppController {
      *
      * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
      */
-    public function add() {
+    public function add()
+    {
         $title = "เพิ่มตัวแทนขาย";
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
@@ -78,7 +82,7 @@ class SellerController extends AppController {
                 $file = $this->request->data['upload_file'];
 
                 $this->loadComponent('UploadImage');
-                $image_id = $this->UploadImage->upload($file, 'seller', null, true);
+                $image_id = $this->UploadImage->upload($file, 'seller', '', '', false);
                 if ($image_id != null) {
                     $this->setImage($result->id, $image_id);
                 }
@@ -91,13 +95,12 @@ class SellerController extends AppController {
         }
 
         $query = $this->Users->find('all', [
-            'conditions' => ['Users.isseller'=> 'Y']
+            'conditions' => ['Users.isseller' => 'Y']
         ]);
         $totalseq = $query->count();
-        
-        $this->set(compact('user','totalseq'));
-        $this->set('_serialize', ['user']);
 
+        $this->set(compact('user', 'totalseq'));
+        $this->set('_serialize', ['user']);
     }
 
     /**
@@ -107,7 +110,8 @@ class SellerController extends AppController {
      * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null) {
+    public function edit($id = null)
+    {
         $user = $this->Users->get($id, [
             'contain' => ['Userimages' => ['Images']]
         ]);
@@ -138,15 +142,14 @@ class SellerController extends AppController {
         }
         $this->set(compact('user'));
         $this->set('_serialize', ['user']);
-
-
     }
 
-    private function setImage($id, $image_id) {
+    private function setImage($id, $image_id)
+    {
         $Userimages = TableRegistry::get('UserImages');
         $userimage = $Userimages->findByUserId($id, [
-                    'contain' => ['Images']
-                ])->first();
+            'contain' => ['Images']
+        ])->first();
         if (sizeof($userimage) == 0) {
             $use = $Userimages->newEntity();
             $use->user_id = $id;
@@ -170,7 +173,8 @@ class SellerController extends AppController {
      * @return \Cake\Network\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null) {
+    public function delete($id = null)
+    {
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id, ['contain' => ['Userimages' => ['Images']]]);
         if ($this->Users->delete($user)) {
@@ -182,5 +186,4 @@ class SellerController extends AppController {
 
         return $this->redirect(['action' => 'index']);
     }
-
 }

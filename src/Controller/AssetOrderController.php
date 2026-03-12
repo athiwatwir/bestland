@@ -28,6 +28,13 @@ class AssetOrderController extends AppController {
     public function sales() {
         $customer = $this->Customers->newEntity();
         if ($this->request->is('post')) {
+            // ถ้าเป็นบอท มักจะกรอกฟิลด์ที่ซ่อนอยู่ไว้ให้ (honeypot)
+            $honeypot = $this->request->getData('website');
+            if (!empty($honeypot)) {
+                // ไม่บันทึกข้อมูล แต่ให้ redirect ไปหน้าสำเร็จเพื่อตัด spam
+                return $this->redirect(['controller' => CTR_SUCCESS, 'action' => 'index']);
+            }
+
             $customer = $this->Customers->patchEntity($customer, $this->request->data);
             $result = $this->Customers->save($customer);
             //$this->log($customer, 'debug');
@@ -53,6 +60,13 @@ class AssetOrderController extends AppController {
     public function purchase() {
         $customer = $this->Customers->newEntity();
         if ($this->request->is('post')) {
+            // ถ้าเป็นบอท มักจะกรอกฟิลด์ที่ซ่อนอยู่ไว้ให้ (honeypot)
+            $honeypot = $this->request->getData('website');
+            if (!empty($honeypot)) {
+                // ไม่บันทึกข้อมูล แต่ให้ redirect ไปหน้าสำเร็จเพื่อตัด spam
+                return $this->redirect(['controller' => CTR_SUCCESS, 'action' => 'index']);
+            }
+
             $customer = $this->Customers->patchEntity($customer, $this->request->data);
             $result = $this->Customers->save($customer);
 
