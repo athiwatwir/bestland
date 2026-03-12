@@ -10,24 +10,26 @@ use Cake\Event\Event;
  *
  * @property \App\Model\Table\AdminHomesTable $AdminHomes
  */
-class AdminHomesController extends AppController {
+class AdminHomesController extends AppController
+{
 
-    public function beforeFilter(Event $event) {
+    public function beforeFilter(Event $event)
+    {
         parent::beforeFilter($event);
         $this->viewBuilder()->layout('admin');
     }
 
-    public function index() {
-        if(null != $this->request->query('reset')){
-            if($this->request->query('reset') == true){
-                $this->request->session()->write('defaultSearch','');
+    public function index()
+    {
+        //echo (new \Cake\Auth\DefaultPasswordHasher)->hash('OuQlmCz+tGsDQ~7-9:5');
+        //exit;
+        if (null != $this->request->query('reset')) {
+            if ($this->request->query('reset') == true) {
+                $this->request->session()->write('defaultSearch', '');
             }
         }
-        
-       $title= "Dashboard";
-       $this->set(compact('title'));
-    }
-    
-    
 
+        $title = "Dashboard";
+        $this->set(compact('title'));
+    }
 }
