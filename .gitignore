@@ -1,0 +1,13 @@
+/.env
+
+/logs/*
+!/logs/empty
+
+/tmp/*
+!/tmp/empty
+
+/.idea/
+/.vscode/
+/.DS_Store
+Thumbs.db
+
