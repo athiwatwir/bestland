@@ -303,7 +303,11 @@ class AdminAssetController extends AppController {
                 if (sizeof($customerIds) != 0) {
 
                     foreach ($customerIds as $a) {
-                        $customer = $this->Customers->get($a->customer_id);
+                        // Customer could be deleted while preferences remain in CustomerAssets.
+                        // Use a safe lookup to avoid RecordNotFoundException.
+                        $customer = $this->Customers->find()
+                            ->where(['Customers.id' => $a->customer_id])
+                            ->first();
                         if (!is_null($customer)) {
                             if ((!is_null($customer->email)) && $customer->email !== '') {
                                 $sendEmail = new Email('default');
