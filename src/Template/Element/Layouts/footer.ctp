@@ -8,10 +8,10 @@
                     <h2 class="u-heading-v2__title h6 text-uppercase mb-0">About Us</h2>
                 </div>
 
-                <p>บริษัทเบสท์แลนด์ แอนด์ เฮ้าส์ซิ่ง จำกัด  บริการให้คำปรึกษา เรื่องซื้อ-รับฝากขายบ้าน รับฝากขายที่ดิน และอสังหาริมทรัพย์อื่นๆ ในเขตกรุงเทพฯ และปริมณฑล</p>
+                <p>บริษัทเบสท์แลนด์ แอนด์ เฮ้าส์ซิ่ง จำกัด บริการให้คำปรึกษา เรื่องซื้อ-รับฝากขายบ้าน รับฝากขายที่ดิน และอสังหาริมทรัพย์อื่นๆ ในเขตกรุงเทพฯ และปริมณฑล</p>
             </div>
             <!-- End Footer Content -->
-            
+
             <!-- Footer Content -->
             <div class="col-lg-4 col-md-6">
                 <div class="u-heading-v2-3--bottom g-brd-white-opacity-0_8 g-mb-20">
@@ -38,7 +38,8 @@
                             </span>
                         </div>
                         <p class="mb-0"><a href="tel:+6627312488" style="color:#FFFFFF !important;">02-731-2488</a><br>
-                            <a href="tel:+66882989644" style="color:#FFFFFF !important;">088-298-9644</a></p>
+                            <a href="tel:+66642648811" style="color:#FFFFFF !important;">064-264-8811</a>
+                        </p>
                     </div>
                     <!-- End Phone -->
 
@@ -79,7 +80,7 @@
             <div class="col-md-12 text-center text-md-left g-mb-10 g-mb-0--md">
                 <div class="d-lg-flex">
                     <ul class="u-list-inline">
-                
+
                         <?php
                         $objArr = ['class' => 'g-color-white-opacity-0_8 g-color-white--hover', 'target' => '', 'escape' => false];
                         ?>
@@ -98,8 +99,8 @@
         <div class="row">
             <div class="col-md-12 text-center text-md-left g-mb-10 g-mb-0--md">
                 <div class="d-lg-flex">
-                    <small class="d-block g-font-size-default g-mr-10 g-mb-10 g-mb-0--md">2017 © All Rights Reserved. Developed by: <a href="http://www.finsoft.co" target="_blank">FinSoft</a></small>
-                    
+                    <small class="d-block g-font-size-default g-mr-10 g-mb-10 g-mb-0--md">2017-2026 © All Rights Reserved. Developed by: <a href="https://www.facebook.com/NorthCodeStudio" target="_blank" style="color:#faba25 !important;">NorthCodeStudio</a></small>
+
                 </div>
             </div>
 
@@ -107,4 +108,3 @@
     </div>
 </footer>
 <!-- End Copyright Footer -->
-
