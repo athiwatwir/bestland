@@ -332,7 +332,13 @@ class AssetsController extends AppController {
     public function view($id = null) {
         $this->viewBuilder()->layout('asset_view');
         $asset = $this->Assets->get($id, [
-            'contain' => ['AssetTypes', 'Zones', 'AssetOptions' => ['Options'], 'Addresses' => ['Provinces'], 'AssetImages' => ['sort' => ['AssetImages.seq' => 'ASC'], 'Images'], 'Users' => ['Userimages' => ['Images']]]
+            'contain' => ['AssetTypes', 'Zones', 'AssetOptions' => ['Options'], 'Addresses' => ['Provinces'], 'AssetImages' => ['sort' => ['AssetImages.seq' => 'ASC'], 'Images'], 'Users' => ['Userimages' => ['Images']]],
+            'conditions' => [
+                'OR' => [
+                    'Assets.expire_date IS' => null,
+                    'Assets.expire_date >=' => date('Y-m-d')
+                ]
+            ]
         ]);
 
         $this->set('asset', $asset);
